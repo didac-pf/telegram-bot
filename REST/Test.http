@@ -1,0 +1,29 @@
+
+###
+
+### Get bot info
+GET https://api.telegram.org/{botToken}/getMe
+
+###
+
+### Get updates
+POST https://api.telegram.org/{botToken}/getUpdates
+Content-Type: application/json
+
+{
+  "timeout": 0,
+  "offset": 0
+}
+
+###
+
+### Send message
+POST https://api.telegram.org/{botToken}/sendMessage
+Content-Type: "application/json"
+
+{
+  "chat_id": 0,
+  "text": "Hello!"
+}
+
+###

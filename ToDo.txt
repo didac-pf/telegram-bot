@@ -1,0 +1,2 @@
+- Daily morning message about weather
+  - Use https://www.aemet.es/xml/municipios_h/localidad_h_08279.xml

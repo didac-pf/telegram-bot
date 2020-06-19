@@ -1,0 +1,28 @@
+{
+  "name": "telegram-bot",
+  "version": "0.0.1",
+  "description": "Telegram bot (¿famework?)",
+  "main": "index.ts",
+  "scripts": {
+    "start": "echo Select a valid script",
+    "chat-listener:dev": "env-cmd -f .env.dev ts-node src/Module/ChatListener/BootstrapChatListener.ts",
+    "scheduler:dev": "env-cmd -f .env.dev ts-node src/Module/Scheduler/BootstrapScheduler.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "telegram",
+    "bot"
+  ],
+  "author": "DidhacK (https://didhack.com)",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "3.9.5",
+    "ts-node": "8.10.2",
+    "axios": "0.19.2"
+  },
+  "devDependencies": {
+    "@types/node": "12.12.6",
+    "env-cmd": "10.1.0",
+    "@types/node-telegram-bot-api": "0.40.3"
+  }
+}
