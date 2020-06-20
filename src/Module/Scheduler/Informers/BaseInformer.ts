@@ -5,6 +5,7 @@ export type TSchedules = 'daily';
 export default abstract class BaseInformer {
 
   protected abstract executionSchedule : TSchedules;
+  protected abstract informerName : string;
 
   /**
    * Time the informer will be executed at
@@ -24,20 +25,56 @@ export default abstract class BaseInformer {
    */
   abstract async action() : Promise<void>;
 
-  public async attempt() {
-    let time : Date;
-
-    switch (this.executionSchedule) {
-      case 'daily':
-        time = Utils.getTodayDateAt(this.executionTime);
-      break;
-    }
-
-    if (this.lastExecutionAttemptAt < time && time < new Date()) {
+  public async attempt() {    
+    if (this.isTimeToExecuteAction()) {
+      console.log(`- [${this.informerName}] - Executing action`);
       await this.action();
+    } else {
+      console.log(`- [${this.informerName}] - ${this.getRemainingTime()}`);
+    }
+  }
+
+  private isTimeToExecuteAction() : boolean {
+    const now           = new Date();
+    const scheduledDate = this.getScheduledDate();
+
+    // console.log(this.lastExecutionAttemptAt ? this.lastExecutionAttemptAt.toISOString() : null);
+    // console.log(scheduledTime.toISOString(), new Date().toISOString());
+    // console.log(this.lastExecutionAttemptAt < scheduledTime, scheduledTime < now);
+
+    let isTime = false;
+    if (this.lastExecutionAttemptAt && this.lastExecutionAttemptAt.getTime() < scheduledDate.getTime() && scheduledDate.getTime() < now.getTime()) {
+      isTime = true;
     }
 
     this.lastExecutionAttemptAt = new Date();
+
+    return isTime;
+  }
+
+  private getRemainingTime() : string {
+    const now           = new Date();
+    const scheduledDate = this.getScheduledDate();
+
+    const secondsRemaining = (Math.floor((scheduledDate.getTime() - now.getTime()) / 1000));
+
+    if (secondsRemaining < 0) {
+      return `To be executed tomorrow`;
+    }
+
+    return `${secondsRemaining} remaining`;
+  }
+
+  private getScheduledDate() : Date {
+    let scheduledDate : Date;
+
+    switch (this.executionSchedule) {
+      case 'daily':
+        scheduledDate = Utils.getTodayDateAt(this.executionTime);
+      break;
+    }
+
+    return scheduledDate;
   }
 
 }

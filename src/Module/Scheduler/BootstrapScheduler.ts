@@ -5,6 +5,8 @@ import Scheduler from './Scheduler';
 
   SchedulerInstance.welcome();
 
+  await SchedulerInstance.start();
+
   console.log('Scheduler stopped. Cya soon!');
 
   process.exit(0);
