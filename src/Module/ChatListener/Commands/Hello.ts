@@ -10,7 +10,7 @@ export default class Hello extends BaseCommand {
   }
 
   public async execute() {
-    console.log('- Sending a greet');
+    console.log(`- Sending a greet to chat ${this.Message.chat.id}`);
     await this.Axios.post(endpoints.sendMessage, {
       chat_id : this.Message.chat.id,
       text    : `Hello ${this.Message.from.username}`,

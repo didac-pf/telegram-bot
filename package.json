@@ -18,7 +18,8 @@
   "dependencies": {
     "typescript": "3.9.5",
     "ts-node": "8.10.2",
-    "axios": "0.19.2"
+    "axios": "0.19.2",
+    "fast-xml-parser": "3.17.4"
   },
   "devDependencies": {
     "@types/node": "12.12.6",

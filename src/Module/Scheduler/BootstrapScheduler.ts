@@ -7,7 +7,10 @@ import Scheduler from './Scheduler';
 
   await SchedulerInstance.start();
 
-  console.log('Scheduler stopped. Cya soon!');
+  console.log();
+  console.log('--- Scheduler stopped. Cya soon! ---');
+  console.log('------------------------------------');
+  console.log();
 
   process.exit(0);
 })();

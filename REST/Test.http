@@ -1,13 +1,14 @@
+# To execute the requests included here, VSCode REST Client extension must be installed
 
 ###
 
 ### Get bot info
-GET https://api.telegram.org/{botToken}/getMe
+GET https://api.telegram.org/{{botToken}}/getMe
 
 ###
 
 ### Get updates
-POST https://api.telegram.org/{botToken}/getUpdates
+POST https://api.telegram.org/{{botToken}}/getUpdates
 Content-Type: application/json
 
 {
@@ -18,7 +19,7 @@ Content-Type: application/json
 ###
 
 ### Send message
-POST https://api.telegram.org/{botToken}/sendMessage
+POST https://api.telegram.org/{{botToken}}/sendMessage
 Content-Type: "application/json"
 
 {
