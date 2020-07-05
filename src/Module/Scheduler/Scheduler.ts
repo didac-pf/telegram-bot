@@ -16,16 +16,16 @@ export default class Scheduler {
   }
 
   public async start() {
-    while (true) { // Standard
+    // while (true) { // Standard
       await this.executeInformers();
       await this.sleep(60);
-    } // Standard
+    // } // Standard
   }
 
   private async executeInformers() {
     for (const Informer of this.Informers) {
-      await Informer.attempt(); // Standard
-      // await Informer.action();  // Dev
+      // await Informer.attempt(); // Standard
+      await Informer.action();  // Dev
     }
   }
 

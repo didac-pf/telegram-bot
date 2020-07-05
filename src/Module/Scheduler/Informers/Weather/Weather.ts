@@ -3,6 +3,7 @@ import AxiosLib, { AxiosInstance } from 'axios';
 import * as XMLParser from 'fast-xml-parser';
 import AemetMapping from './AemetMapping';
 import endpoints from '../../../../endpoints';
+import Utils from '../../../../Utils';
 
 const calloutWords = [
   { originWord: 'lluvia',    targetWord: 'lluvioso', weight: 100 },
@@ -30,23 +31,39 @@ export default class Weather extends BaseInformer {
   }
 
   async action() {
+    console.log(process.env.AEMET_CITY_CODE_1);
     const result = await AxiosLib.get(`https://www.aemet.es/xml/municipios_h/localidad_h_${process.env.AEMET_CITY_CODE_1}.xml`);
     
-    const parsedData = XMLParser.parse(result.data);
+    const options : Partial<XMLParser.J2xOptions> = {
+      ignoreAttributes: false
+    }
+
+    const parsedData = XMLParser.parse(result.data, options);
 
     try {
-      for (const unparsedValue of parsedData.root.prediccion.dia[1].estado_cielo) {
-        const parsedValue = AemetMapping[unparsedValue];
+      for (const day of parsedData.root.prediccion.dia) {
 
-        calloutWords.map(item => {
-          if (parsedValue.indexOf(item.originWord) !== -1) {
-            if (this.calloutWordsResults[item.originWord]) {
-              this.calloutWordsResults[item.targetWord] += item.weight;
-            } else {
-              this.calloutWordsResults[item.targetWord] = item.weight;
+        // console.log(day);
+        console.log(day['@_fecha'], Utils.formatDate(new Date()));
+
+        if (day['@_fecha'] !== Utils.formatDate(new Date())) {
+          continue;
+        }
+
+        for (const unparsedValue of day.estado_cielo) {
+          // TODO seguir aqui, parsedValue parece undefined
+          const parsedValue = AemetMapping[unparsedValue];
+
+          calloutWords.map(item => {
+            if (parsedValue.indexOf(item.originWord) !== -1) {
+              if (this.calloutWordsResults[item.originWord]) {
+                this.calloutWordsResults[item.targetWord] += item.weight;
+              } else {
+                this.calloutWordsResults[item.targetWord] = item.weight;
+              }
             }
-          }
-        });
+          });
+        }        
       }
 
       const tmpArray = [];
@@ -75,7 +92,7 @@ export default class Weather extends BaseInformer {
 
       console.log(text);
 
-      await this.sendMessage(parseInt(process.env.CHAT_ID), text)
+      // await this.sendMessage(parseInt(process.env.CHAT_ID), text)
 
     } catch (err) {
       console.log('Something went wrong during data interpretation:');
